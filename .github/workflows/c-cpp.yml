@@ -1,0 +1,20 @@
+name: Run Blutter
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pyelftools python3-requests git cmake ninja-build build-essential pkg-config libicu-dev libcapstone-dev
+      - name: Run Blutter
+        run: |
+          # 假设你的 libapp.so 和 libflutter.so 已经放在根目录了
+          python3 blutter.py . out_result
+      - name: Upload pp.txt
+        uses: actions/upload-artifact@v3
+        with:
+          name: blutter-output
+          path: out_result/pp.txt
